@@ -22,27 +22,32 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeContent extends StatelessWidget{
+  // 自定义方法
+  var listData = [{"title": 'hello'},{"title": 'world'}];
+  // List<Widget> _getData() {
+  //   List<Widget> list = new List();
+  //   for(var i = 0; i < 20; i++) {
+  //     list.add(ListTile(
+  //       title: Text('hello $i'),
+  //     ));
+  //   }
+  //   return list;
+  // }
+
+  List<Widget> _getData() {
+    var tempList = listData.map((value){
+      return ListTile(
+        title: Text(value['title'])
+      );
+    });
+    //此时tempList 需要转为数组，dart map的特点
+    return tempList.toList();
+  }
+
   Widget build(BuildContext context) {
     // return Center(child: Text('你好jiao',textDirection: TextDirection.ltr,style: TextStyle(fontSize: 40.0,color: Color.fromRGBO(233, 233, 234, 0.4)),));
-    return Center(child: Container(
-      // child: Image.network(
-      //   'http://oss.pinduozhuan.com/ksl9pymxvpzuvh5mc1m5.png',
-      //   fit: BoxFit.contain
-      //   ),
-      child: ClipOval(child: Image.asset(
-        'images/task_invite.jpg',height: 200,width: 200,fit: BoxFit.cover),
-      ),
-      // width: 300,
-      // height: 300,
-      // decoration: BoxDecoration(
-      //   color: Colors.yellow,
-      //   // borderRadius: BorderRadius.all(Radius.circular(150))
-      //   borderRadius: BorderRadius.circular(150),
-      //   image: DecorationImage(
-      //     image: NetworkImage('http://oss.pinduozhuan.com/ksl9pymxvpzuvh5mc1m5.png'),
-      //     fit: BoxFit.cover
-      //   ),        
-      // ),
-    ));
+    return ListView(
+      children: this._getData(),
+    );
   }
 }
