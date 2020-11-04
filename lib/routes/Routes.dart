@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import '../pages/FormPage.dart';
 import '../pages/Search.dart';
 import '../pages/tabs/Tabs.dart';
+import '../pages/user/Login.dart';
 
 final routes = {
-  '/': (context)=>Tabs(),
+  '/': (context,{index})=>Tabs(index: index = 2),
   '/form': (context,{arguments})=>FormPage(arguments: arguments),
   '/search': (context,{arguments})=>Search(arguments: arguments),
+  '/user/login': (context,{arguments})=>Login(),
 };
 
 var onGenerateRoute = (RouteSettings settings) {

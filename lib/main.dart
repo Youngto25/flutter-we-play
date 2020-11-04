@@ -3,8 +3,9 @@ import 'pages/tabs/Tabs.dart';
 import './routes/Routes.dart';
 
 
-
-void main() => runApp(MyApp());
+void main(){
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   
@@ -12,8 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
+      debugShowCheckedModeBanner: false, //去掉debug
       theme: ThemeData(
-        primarySwatch: Colors.yellow
+        primarySwatch: Colors.yellow,
+        textTheme: TextTheme(
+          bodyText2: TextStyle(color: Colors.black38,fontSize: 12),
+        )
       ),
       initialRoute: '/',
       onGenerateRoute: onGenerateRoute,
@@ -26,7 +31,6 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }

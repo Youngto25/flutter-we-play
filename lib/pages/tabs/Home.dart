@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import '../Search.dart';
-import '../FormPage.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
-
+  
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState () {
+    // TODO: implement initState
+    super.initState();
+    // _phone.text = '';
+    this.getList();
+  }
+  void getList() async{
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,10 +30,11 @@ class _HomeState extends State<Home> {
            RaisedButton(
              onPressed: (){
                Navigator.pushNamed(context,'/search', arguments: {'goodsId': 888});
-              //  Navigator.of(context).push(
-              //    MaterialPageRoute(builder: (context)=>Search())
-              //  );
-             },child: Text('跳转到搜索页面'),)
+             },child: Text('跳转到搜索页面'),),
+           RaisedButton(
+             onPressed: (){
+               Navigator.pushNamed(context,'/user/login');
+             },child: Text('跳转到登录页面',),)
          ],),
     );
   }
