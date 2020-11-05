@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -13,96 +15,63 @@ class Method {
   static final String patch = "PATCH";
 }
 
-class DioUtil {
-  static final DioUtil _instance = DioUtil._init();
-  static Dio _dio;
-  static BaseOptions _options = getDefOptions();
+setToken(token) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final setTokenResult = await prefs.setString('user_token', token);
+  if(setTokenResult){
 
-  factory DioUtil() {
-    return _instance;
-  }
-
-  DioUtil._init() {
-    _dio = new Dio();
-  }
-
-  static BaseOptions getDefOptions() {
-    BaseOptions options = BaseOptions();
-    options.connectTimeout = 10 * 1000;
-    options.receiveTimeout = 20 * 1000;
-    // options.contentType = ContentType.parse('application/x-www-form-urlencoded');
-
-    Map<String, dynamic> headers = Map<String, dynamic>();
-    headers['Accept'] = 'application/json';
-
-    String platform;
-    if(Platform.isAndroid) {
-      platform = "Android";
-    } else if(Platform.isIOS) {
-      platform = "IOS";
-    }
-    headers['OS'] = platform;
-    options.headers = headers;
-
-    return options;
-  }
-
-  setOptions(BaseOptions options) {
-    _options = options;
-    _dio.options = _options;
-  }
-
-  Future<Map<String, dynamic>> get(String path, {pathParams, data, Function errorCallback}) {
-    return request(path, method: Method.get, pathParams: pathParams, data: data, errorCallback: errorCallback);
-  }
-
-  Future<Map<String, dynamic>> post(String path, {pathParams, data, Function errorCallback}) {
-    return request(path, method: Method.post, pathParams: pathParams, data: data, errorCallback: errorCallback);
-  }
-
-  Future<Map<String, dynamic>> request(String path,{String method, Map pathParams, data, Function errorCallback}) async {
-    ///restful请求处理
-    if(pathParams != null) {
-      pathParams.forEach((key, value) {
-        if(path.indexOf(key) != -1) {
-          path = path.replaceAll(":$key", value.toString());
-        }
-      });
-    }
-
-    Response response = await _dio.request('$basicUrl/$path', data: data, options: Options(method: method));
-
-    if(response.statusCode == HttpStatus.ok || response.statusCode == HttpStatus.created) {
-      try {
-        if(response.data is Map) {
-          return response.data;
-        } else {
-          return json.decode(response.data.toString());
-        }
-      } catch(e) {
-
-        return null;
-      }
-    } else {
-      _handleHttpError(response.statusCode);
-      if(errorCallback != null) {
-        errorCallback(response.statusCode);
-      }
-      return null;
-    }
-  }
-
-  ///处理Http错误码
-  void _handleHttpError(int errorCode) {
+  }else{
 
   }
 }
 
-// class Http{
-//   request(url,params) async{
-//     Response response;
-//     Dio dio = Dio();
-//     response = await dio.get("$basicUrl/$url", queryParameters: params);
-//     print(response.data.toString());
-//   }
-// }
+getToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  // print(prefs.getString('user_token'));
+}
+
+class HttpManage{
+  var headers = {
+    "Accept": "application/json",
+    "ResponseType": ResponseType.plain,
+    "X-Litemall-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNjA0NTY2MzAyLCJ1c2VySWQiOjczLCJpYXQiOjE2MDQ1NTkxMDJ9.Dx5pQ1U7otHWWzC6KTDwZjfveVBfqJbnTfhpJ9apoZ4"
+  };
+  Dio dio;
+  HttpManage() {
+    dio = Dio();
+    dio.options.headers = this.headers;
+  }
+  request(url,params,method) async{
+    Response response;
+    switch (method){
+      case 'get': 
+        response = await this._get(url,params);
+        break;
+      case 'post':
+        response = await this._post(url,params);
+        break;
+    }
+    if(true){
+      getToken();
+    }
+    print('response');
+    print(response);
+    if(response.data["errno"] != 0) {
+      Fluttertoast.showToast(
+        msg: response.data["errmsg"],
+      );
+    }
+    return response.data;
+  }
+
+  _get(url,params) async {
+    Response response;
+    response = await dio.get("$basicUrl/$url", queryParameters: params);
+    return response;
+  }
+  _post(url,params) async {
+    Response response;
+    response = await dio.post("$basicUrl/$url", data: params);
+    return response;
+  }
+}

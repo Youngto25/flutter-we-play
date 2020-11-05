@@ -14,46 +14,89 @@ class _LoginState extends State<Login> {
   var _phone;
   var _verify;
   @override
-  void initState () {
+  void initState() {
     // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Timer _countdownTimer;
+    // String _codeCountdownStr = '获取验证码';
+    // int _countdownNum = 59;
+    // void getVerify(){
+    //   this._timer = setInterval((){
+
+    //   })
+    // }
     return Scaffold(
-      appBar: AppBar(
-        title: Text('登录')
-      ),
-      body: Container(
-        // color: Colors.red,
-        padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
-        child: Column(children: [
-          Text('手机号快捷登录', style: TextStyle(fontSize: 24.0,color: Color.fromRGBO(51, 51, 51, 1),fontWeight: FontWeight.bold),),
-          Text('未注册过的手机号将自动创建账号', style: TextStyle(fontSize: 14.0,color: Color.fromRGBO(153, 153, 153, 1),),),
-          TextField(
-            decoration: InputDecoration(labelText: '手机号',errorText: '手机号格式不对',errorStyle: TextStyle(color: false ? Colors.transparent : Colors.redAccent),),
-            onChanged: (context)=>{setState((){this._phone = context;})},
-            keyboardType: TextInputType.number,
-          ),
-          Row(children: [
-            Expanded(child: 
+        appBar: AppBar(title: Text('登录')),
+        body: Container(
+          // color: Colors.red,
+          padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+          child: Column(
+            children: [
+              Text(
+                '手机号快捷登录',
+                style: TextStyle(
+                    fontSize: 24.0,
+                    color: Color.fromRGBO(51, 51, 51, 1),
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '未注册过的手机号将自动创建账号',
+                style: TextStyle(
+                  fontSize: 14.0,
+                  color: Color.fromRGBO(153, 153, 153, 1),
+                ),
+              ),
               TextField(
-                decoration: InputDecoration(labelText: '验证码'),
-                onChanged: (context){setState((){this._verify = context;});},
+                decoration: InputDecoration(
+                  labelText: '手机号',
+                  errorText: '手机号格式不对',
+                  errorStyle: TextStyle(
+                      color: false ? Colors.transparent : Colors.redAccent),
+                ),
+                onChanged: (context) => {
+                  setState(() {
+                    this._phone = context;
+                  })
+                },
                 keyboardType: TextInputType.number,
               ),
-              flex: 4
-            ),
-            Expanded(child: 
-              RaisedButton(onPressed: (){},child: Text('倒计时'),),
-              flex: 1
-            ,)
-          ],),
-          RaisedButton(onPressed: (){print(this._phone);print(this._verify);},child: Text('登录')),
-          
-        ],),
-      )
-    );
+              Stack(
+                children: [
+                  Positioned(
+                    child: TextField(
+                      decoration: InputDecoration(labelText: '验证码'),
+                      onChanged: (context) {
+                        setState(() {
+                          this._verify = context;
+                        });
+                      },
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: RaisedButton(
+                      onPressed: () {
+
+                      },
+                      child: Text('获取验证码'),
+                    ),
+                  )
+                ],
+              ),
+              RaisedButton(
+                  onPressed: () {
+                    print(this._phone);
+                    print(this._verify);
+                  },
+                  child: Text('登录')),
+            ],
+          ),
+        ));
   }
 }

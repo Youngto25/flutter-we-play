@@ -1,10 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'pages/tabs/Tabs.dart';
 import './routes/Routes.dart';
+import './utils/http/request.dart';
 
 
 void main(){
-  return runApp(MyApp());
+  var Http = HttpManage();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
           bodyText2: TextStyle(color: Colors.black38,fontSize: 12),
         )
       ),
-      initialRoute: '/',
+      initialRoute: '/user/login',
       onGenerateRoute: onGenerateRoute,
     );
   }
