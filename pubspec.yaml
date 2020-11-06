@@ -52,10 +52,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets: 
-   - images/task_invite.jpg
-   - images/2.0x/task_invite.jpg
-   - images/3.0x/task_invite.jpg
-   - images/4.0x/task_invite.jpg
+   - images/
 
 
   # To add assets to your application, add an assets section, like this:
