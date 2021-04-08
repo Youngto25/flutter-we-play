@@ -37,6 +37,8 @@ dependencies:
   connectivity: ^2.0.1
   common_utils: ^1.2.1
 
+  image_picker: ^0.6.7 # 获取手机图片
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

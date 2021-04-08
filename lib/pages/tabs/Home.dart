@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../utils/http/request.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:convert';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -29,7 +27,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
           loadMoreTextStyle =
               new TextStyle(color: const Color(0xFF4483f6), fontSize: 14.0);
         });
-        if(!theEnd){
+        if (!theEnd) {
           loadMoreData();
         }
       } else {
@@ -64,14 +62,16 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   }
 
   void getList() async {
-    var response = await HttpManage()
-        .request('pintuan/listPintuan', {"category": 2, "page": this.currentPage}, 'get');
+    var response = await HttpManage().request('pintuan/listPintuan',
+        {"category": 2, "page": this.currentPage}, 'get');
     this.setState(() {
-      this._list = this.currentPage == 1 ? response["data"]["list"] : [...this._list, ...response["data"]["list"]];
+      this._list = this.currentPage == 1
+          ? response["data"]["list"]
+          : [...this._list, ...response["data"]["list"]];
     });
-    if(response["data"]["pages"] > this.currentPage){
+    if (response["data"]["pages"] > this.currentPage) {
       this.currentPage += 1;
-    }else{
+    } else {
       setState(() {
         theEnd = true;
       });
@@ -116,6 +116,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
             ),
     ));
   }
+
   bool get wantKeepAlive => true;
 }
 

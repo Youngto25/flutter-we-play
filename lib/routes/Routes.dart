@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/photoGet/PhotoGet.dart';
 
 import '../pages/FormPage.dart';
 import '../pages/Search.dart';
@@ -6,10 +7,12 @@ import '../pages/tabs/Tabs.dart';
 import '../pages/user/Login.dart';
 
 final routes = {
-  '/': (context,{index})=>Tabs(index: index = 1),
-  '/form': (context,{arguments})=>FormPage(arguments: arguments),
-  '/search': (context,{arguments})=>Search(arguments: arguments),
-  '/user/login': (context,{arguments})=>Login(),
+  '/': (context, {index}) => Tabs(index: index = 1),
+  '/form': (context, {arguments}) => FormPage(arguments: arguments),
+  '/search': (context, {arguments}) => Search(arguments: arguments),
+  '/user/login': (context, {arguments}) => Login(),
+  // 图片获取yemian
+  '/photo': (context) => PhotoGet(),
 };
 
 var onGenerateRoute = (RouteSettings settings) {
