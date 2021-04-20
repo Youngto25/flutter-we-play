@@ -5,14 +5,14 @@ import 'package:flutter_app/pages/user/User.dart';
 
 class Tabs extends StatefulWidget {
   final index;
-  Tabs({Key key, this.index = 2}) : super(key: key);
+  Tabs({Key key, this.index = 0}) : super(key: key);
 
   @override
   _TabsState createState() => _TabsState(this.index);
 }
 
 class _TabsState extends State<Tabs> {
-  int _currentIndex = 2;
+  int _currentIndex = 0;
 
   PageController _pageController;
 

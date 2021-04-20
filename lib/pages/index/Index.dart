@@ -9,10 +9,42 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
+  List<int> playCountList = [10, 15, 20, 30, 40, 50, 100];
+  int selectCount = 0;
+  List<int> finishList = [];
+  int finishCount = 0;
+  String now = '';
+
+  @override
+  void initState() {
+    now = DateTime.now().toString().substring(0,10);
+    super.initState();
+  }
+
+  // 计算累计完成次数
+  void computeFinishCount() {
+    int count = 0;
+    finishList.forEach((vo) {
+      count += vo;
+    });
+    finishCount = count;
+    this.setState(() {});
+  }
+
+  // 确定完成次数
+  void alreadySelectCount() {
+    if (selectCount == 0) {
+      return;
+    }
+    finishList.add(selectCount);
+    selectCount = 0;
+    this.computeFinishCount();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarX(title: "欢迎来到—We Play", elevation: 0),
+      appBar: AppBarX(title: "$now欢迎来到—We Play", elevation: 0),
       body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -24,19 +56,75 @@ class _IndexState extends State<Index> {
               SizedBox(
                 height: 100,
               ),
-              inputWidget(),
-              inputWidget(lable: "次数"),
+              // inputWidget(),
+              // inputWidget(lable: "次数"),
+              Container(
+                  margin: EdgeInsets.only(bottom: 30),
+                  child: Center(
+                      child: Text('今日累计完成$finishCount次',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)))),
+              GridView(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 100, //子控件最大宽度为100
+                  childAspectRatio: 2, //宽高比为1:2
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                padding: EdgeInsets.all(10),
+                children: List.generate(
+                  playCountList.length,
+                  (index) {
+                    return ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: selectCount == playCountList[index]
+                                  ? Color.fromRGBO(255, 50, 50, 1)
+                                  : Colors.black.withOpacity(0.1),
+                            ),
+                            child: FlatButton(
+                                onPressed: () {
+                                  this.setState(() {
+                                    selectCount = playCountList[index];
+                                  });
+                                },
+                                child: Text(
+                                  playCountList[index].toString(),
+                                  style: TextStyle(
+                                      color: selectCount == playCountList[index]
+                                          ? Colors.white
+                                          : Theme.of(context)
+                                              .textTheme
+                                              .bodyText2
+                                              .color),
+                                ))));
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
               ClipRRect(
                   borderRadius: BorderRadius.circular(25),
-                  child: Container(
+                  child: AnimatedContainer(
+                      duration: Duration(milliseconds: 100),
                       width: double.infinity,
                       height: 50,
-                      color: Colors.yellow.withOpacity(0.8),
+                      color: selectCount > 0
+                          ? Color.fromRGBO(255, 50, 50, 1)
+                          : Colors.black.withOpacity(0.1),
                       child: FlatButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/photo');
+                            this.alreadySelectCount();
                           },
-                          child: Text('提交', style: TextStyle(fontSize: 18)))))
+                          child: Text(
+                              selectCount > 0
+                                  ? '已选择$selectCount次，确定'
+                                  : '选择完成次数',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.white)))))
             ],
           )),
     );
