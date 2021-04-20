@@ -9,7 +9,7 @@ import '../pages/tabs/Tabs.dart';
 import '../pages/user/Login.dart';
 
 final routes = {
-  '/': (context) => Home(),
+  '/': (context) => Tabs(),
   '/index': (context) => Index(),
   '/form': (context, {arguments}) => FormPage(arguments: arguments),
   '/search': (context, {arguments}) => Search(arguments: arguments),

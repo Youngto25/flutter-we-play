@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      debugShowCheckedModeBanner: false, //去掉debug
+      debugShowCheckedModeBanner: true, //去掉debug
       theme: ThemeData(
           appBarTheme: AppBarTheme(
             elevation: 0.5,
@@ -40,11 +40,11 @@ class MyApp extends StatelessWidget {
             bodyText1:
                 TextStyle(color: Color.fromRGBO(51, 51, 51, 1), fontSize: 14),
             bodyText2: TextStyle(
-                color: Color.fromRGBO(255, 31, 57, 1),
-                fontSize: 14,
-                fontWeight: FontWeight.bold),
+              color: Color(0xff333333),
+              fontSize: 14,
+            ),
           )),
-      initialRoute: '/photo',
+      initialRoute: '/',
       onGenerateRoute: onGenerateRoute,
     );
   }

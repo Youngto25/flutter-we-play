@@ -12,7 +12,7 @@ class _IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarX(title: "你好啊", elevation: 0),
+      appBar: AppBarX(title: "欢迎来到—We Play", elevation: 0),
       body: Container(
           width: double.infinity,
           height: double.infinity,
