@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/model/counter_model.dart';
+import 'package:flutter_app/model/language_model.dart';
 import 'package:flutter_app/public.dart';
+import 'package:provider/provider.dart';
 
 class Index extends StatefulWidget {
   Index({Key key}) : super(key: key);
@@ -17,7 +20,7 @@ class _IndexState extends State<Index> {
 
   @override
   void initState() {
-    now = DateTime.now().toString().substring(0,10);
+    now = DateTime.now().toString().substring(0, 10);
     super.initState();
   }
 
@@ -44,7 +47,9 @@ class _IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarX(title: "$now欢迎来到—We Play", elevation: 0),
+      appBar: AppBarX(
+          title: "$now${context.watch<Language>().language["welcome"]}—We Play",
+          elevation: 0),
       body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -124,9 +129,15 @@ class _IndexState extends State<Index> {
                                   ? '已选择$selectCount次，确定'
                                   : '选择完成次数',
                               style: TextStyle(
-                                  fontSize: 18, color: Colors.white)))))
+                                  fontSize: 18, color: Colors.white))))),
+              Text('${context.watch<Counter>().count}')
             ],
           )),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.read<Counter>().increment();
+          },
+          child: Text("add")),
     );
   }
 
