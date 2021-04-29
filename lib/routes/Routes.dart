@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/index/Index.dart';
 import 'package:flutter_app/pages/photoGet/PhotoGet.dart';
-import 'package:flutter_app/pages/tabs/Home.dart';
+import 'package:flutter_app/pages/home/Home.dart';
 
 import '../pages/FormPage.dart';
 import '../pages/Search.dart';
@@ -10,6 +10,7 @@ import '../pages/user/Login.dart';
 
 final routes = {
   '/': (context) => Tabs(),
+  '/home': (context) => Home(),
   '/index': (context) => Index(),
   '/form': (context, {arguments}) => FormPage(arguments: arguments),
   '/search': (context, {arguments}) => Search(arguments: arguments),

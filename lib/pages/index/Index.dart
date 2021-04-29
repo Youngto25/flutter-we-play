@@ -130,15 +130,23 @@ class _IndexState extends State<Index> {
                                   : '选择完成次数',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.white))))),
-              Text('${context.watch<Counter>().count}')
+              // RaisedButton(
+              //     onPressed: () {
+              //       debugPrint("开始下载");
+              //       HttpManage.request(
+              //           "http//storage.360buyimg.com/jdmobile/JDMALL-PC2.apk",
+              //           null,
+              //           "download",
+              //           onReceiveProgress: downloadProgress);
+              //     },
+              //     child: Text('下载'))
             ],
           )),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.read<Counter>().increment();
-          },
-          child: Text("add")),
     );
+  }
+
+  Future downloadProgress(a, b) async {
+    print(["downloadProgress", a, b]);
   }
 
   Widget inputWidget({lable}) {

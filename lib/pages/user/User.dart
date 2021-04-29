@@ -119,6 +119,26 @@ class _UserState extends State<User> {
                           ),
                         ),
                       ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: double.infinity,
+                        height: 60,
+                        color: Colors.white,
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        margin: EdgeInsets.only(top: 10, bottom: 10),
+                        child: InkWell(
+                          onTap: () {
+                            print(["inkwell"]);
+                            Navigator.of(context).pushNamed('/home');
+                          },
+                          child: Row(
+                            children: [
+                              Text("Picture",
+                                  style: Theme.of(context).textTheme.subtitle1)
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ))
             ],

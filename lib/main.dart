@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/config/global.dart';
 import 'package:flutter_app/model/counter_model.dart';
 import 'package:flutter_app/model/language_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,13 +14,16 @@ void main() {
   // 强制竖屏
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => Counter()),
-        ChangeNotifierProvider(create: (_) => Language()),
-      ],
-      child: MyApp(),
-    ));
+    Global.init().then((_) {
+      debugPrint("app init");
+      runApp(MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => Counter()),
+          ChangeNotifierProvider(create: (_) => Language()),
+        ],
+        child: MyApp(),
+      ));
+    });
   });
   if (Platform.isAndroid) {
     // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
@@ -60,7 +64,7 @@ class MyApp extends StatelessWidget {
             bodyText2:
                 TextStyle(color: Color(0xff333333), fontSize: 14, height: 1),
           )),
-      initialRoute: '/',
+      initialRoute: '/home',
       onGenerateRoute: onGenerateRoute,
     );
   }

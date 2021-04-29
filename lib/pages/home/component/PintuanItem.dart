@@ -1,125 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../utils/http/request.dart';
 
-class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
-
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
-  List _list = [];
-  int totalSize = 100;
-  int currentPage = 1;
-  bool theEnd = false;
-  String loadMoreText;
-  TextStyle loadMoreTextStyle;
-  ScrollController _controller = new ScrollController();
-
-  _HomeState() {
-    _controller.addListener(() {
-      var maxScroll = _controller.position.maxScrollExtent;
-      var pixel = _controller.position.pixels;
-      if (maxScroll == pixel && this._list.length < totalSize) {
-        setState(() {
-          loadMoreText = "正在加载中...";
-          loadMoreTextStyle =
-              new TextStyle(color: const Color(0xFF4483f6), fontSize: 14.0);
-        });
-        if (!theEnd) {
-          loadMoreData();
-        }
-      } else {
-        setState(() {
-          loadMoreText = "没有更多数据";
-          loadMoreTextStyle =
-              new TextStyle(color: const Color(0xFF999999), fontSize: 14.0);
-        });
-      }
-    });
-  }
-
-  loadMoreData() {
-    print('load more');
-    this.getList();
-  }
-
-  Future _pullToRefresh() async {
-    print('refresh');
-    this.currentPage = 1;
-    this.setState(() {
-      theEnd = false;
-    });
-    this.getList();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    this.getList();
-  }
-
-  void getList() async {
-    var response = await HttpManage().request('pintuan/listPintuan',
-        {"category": 2, "page": this.currentPage}, 'get');
-    this.setState(() {
-      this._list = this.currentPage == 1
-          ? response["data"]["list"]
-          : [...this._list, ...response["data"]["list"]];
-    });
-    if (response["data"]["pages"] > this.currentPage) {
-      this.currentPage += 1;
-    } else {
-      setState(() {
-        theEnd = true;
-      });
-    }
-    // var sign = await HttpManage().request('user/sign', {}, 'post');
-  }
-
-  /**
-   * 加载更多进度条
-   */
-  Widget _buildProgressMoreIndicator() {
-    print('loading');
-    return new Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: new Center(
-        child: new Text(loadMoreText, style: loadMoreTextStyle),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Padding(
-      padding: EdgeInsets.all(12),
-      child: this._list.length == 0
-          ? Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              color: const Color(0xFF4483f6),
-              child: ListView.builder(
-                controller: _controller,
-                itemCount: this._list.length,
-                itemBuilder: (context, index) {
-                  if (index == this._list.length) {
-                    return _buildProgressMoreIndicator();
-                  } else {
-                    return PintuanItem(item: this._list[index]);
-                  }
-                },
-              ),
-              onRefresh: _pullToRefresh,
-            ),
-    ));
-  }
-
-  bool get wantKeepAlive => true;
-}
-
+// ignore: must_be_immutable
 class PintuanItem extends StatefulWidget {
   var item;
   PintuanItem({Key key, this.item}) : super(key: key);
@@ -143,7 +24,6 @@ class _PintuanItemState extends State<PintuanItem> {
             color: Color.fromRGBO(255, 255, 255, 1),
             borderRadius: BorderRadius.circular(4)),
         margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-        padding: EdgeInsets.all(10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           verticalDirection: VerticalDirection.down,
@@ -166,7 +46,7 @@ class _PintuanItemState extends State<PintuanItem> {
             ),
             Expanded(
               child: Container(
-                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  padding: EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

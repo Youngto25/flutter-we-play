@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
@@ -18,11 +19,8 @@ class Method {
 setToken(token) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final setTokenResult = await prefs.setString('user_token', token);
-  if(setTokenResult){
-
-  }else{
-
-  }
+  if (setTokenResult) {
+  } else {}
 }
 
 getToken() async {
@@ -30,48 +28,57 @@ getToken() async {
   // print(prefs.getString('user_token'));
 }
 
-class HttpManage{
-  var headers = {
+class HttpManage {
+  static var headers = {
     "Accept": "application/json",
     "ResponseType": ResponseType.plain,
-    "X-Litemall-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0aGlzIGlzIGxpdGVtYWxsIHRva2VuIiwiYXVkIjoiTUlOSUFQUCIsImlzcyI6IkxJVEVNQUxMIiwiZXhwIjoxNjA0NTY2MzAyLCJ1c2VySWQiOjczLCJpYXQiOjE2MDQ1NTkxMDJ9.Dx5pQ1U7otHWWzC6KTDwZjfveVBfqJbnTfhpJ9apoZ4"
+    "X-Litemall-Token": ""
   };
-  Dio dio;
+  static Dio dio;
   HttpManage() {
+    debugPrint("dio init");
     dio = Dio();
-    dio.options.headers = this.headers;
+    dio.options.headers = headers;
   }
-  request(url,params,method) async{
+  static request(url, params, method, {onReceiveProgress, server}) async {
     Response response;
-    switch (method){
-      case 'get': 
-        response = await this._get(url,params);
+    switch (method) {
+      case 'get':
+        response = await _get(url, params, server: server);
         break;
       case 'post':
-        response = await this._post(url,params);
+        response = await _post(url, params);
         break;
+      case "download":
+        response = await _download(url, onReceiveProgress);
     }
-    if(true){
+    if (true) {
       getToken();
     }
     print('response');
     print(response);
-    if(response.data["errno"] != 0) {
-      Fluttertoast.showToast(
-        msg: response.data["errmsg"],
-      );
-    }
-    return response.data;
+    // if (response.data["errno"] != 0) {
+    //   Fluttertoast.showToast(
+    //     msg: response.data["errmsg"],
+    //   );
+    // }
+    return response;
   }
 
-  _get(url,params) async {
-    Response response;
-    response = await dio.get("$basicUrl/$url", queryParameters: params);
-    return response;
+  static Future _get(url, params, {server}) async {
+    String path = "${server != null ? server : basicUrl}/$url";
+    print(["get request=====>", path]);
+    return await dio.get(path, queryParameters: params);
   }
-  _post(url,params) async {
-    Response response;
-    response = await dio.post("$basicUrl/$url", data: params);
-    return response;
+
+  static Future _post(url, params) async {
+    return await dio.post("$basicUrl/$url", data: params);
+  }
+
+  static Future _download(url, onReceiveProgress) async {
+    print('download');
+    return await dio.download(url, "/", onReceiveProgress: (a, b) {
+      print(['download', a, b]);
+    });
   }
 }
