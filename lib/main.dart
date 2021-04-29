@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
             bodyText2:
                 TextStyle(color: Color(0xff333333), fontSize: 14, height: 1),
           )),
-      initialRoute: '/home',
+      initialRoute: '/',
       onGenerateRoute: onGenerateRoute,
     );
   }
