@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/public.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
@@ -80,5 +81,15 @@ class HttpManage {
     return await dio.download(url, "/", onReceiveProgress: (a, b) {
       print(['download', a, b]);
     });
+  }
+
+  // 获取天气信息
+  static getWeatherInfo({city = 110101}) async {
+    var response = await request(
+        'weatherInfo',
+        {"key": GAODE_KEY, "city": city, "extensions": "all", "output": "JSON"},
+        "get",
+        server: GAODE_WEATHER_SERVER);
+    return response;
   }
 }

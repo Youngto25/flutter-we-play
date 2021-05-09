@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/index/Index.dart';
 import 'package:flutter_app/pages/photoGet/PhotoGet.dart';
 import 'package:flutter_app/pages/home/Home.dart';
+import 'package:flutter_app/pages/weather/Weather.dart';
 
 import '../pages/FormPage.dart';
 import '../pages/Search.dart';
@@ -17,6 +18,7 @@ final routes = {
   '/user/login': (context, {arguments}) => Login(),
   // 图片获取yemian
   '/photo': (context) => PhotoGet(),
+  '/weather': (context) => Weather(),
 };
 
 var onGenerateRoute = (RouteSettings settings) {

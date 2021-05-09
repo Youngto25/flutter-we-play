@@ -1,5 +1,8 @@
 library public;
 
+// 配置
+export 'package:flutter_app/config/config.dart';
+
 export 'package:flutter_app/utils/lcfarm_size.dart';
 
 // component
