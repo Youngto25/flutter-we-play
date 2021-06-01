@@ -6,14 +6,14 @@ import 'package:flutter_app/pages/user/User.dart';
 
 class Tabs extends StatefulWidget {
   final index;
-  Tabs({Key key, this.index = 0}) : super(key: key);
+  Tabs({Key key, this.index = 1}) : super(key: key);
 
   @override
   _TabsState createState() => _TabsState(this.index);
 }
 
 class _TabsState extends State<Tabs> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   PageController _pageController;
 
@@ -30,14 +30,16 @@ class _TabsState extends State<Tabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Color.fromRGBO(255, 50, 50, 1),
-        onPressed: () {
-          print('click');
-          Navigator.of(context).pushNamed("/photo");
-        },
-      ),
+      floatingActionButton: _currentIndex == 0
+          ? FloatingActionButton(
+              child: Icon(Icons.add),
+              backgroundColor: Color.fromRGBO(255, 50, 50, 1),
+              onPressed: () {
+                print('click');
+                Navigator.of(context).pushNamed("/photo");
+              },
+            )
+          : Container(),
       // persistentFooterButtons: [Text('niaho'),Text('niaho')],
       body: PageView(
         physics: NeverScrollableScrollPhysics(),

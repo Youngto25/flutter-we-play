@@ -15,6 +15,7 @@ class _TheTimerState extends State<TheTimer>
   List<IconData> icon = [Icons.play_arrow, Icons.pause];
   AnimationController controller;
   Animation<double> animation;
+  String currentAction = "平板支撑";
 
   @override
   void initState() {
@@ -55,77 +56,127 @@ class _TheTimerState extends State<TheTimer>
         elevation: 0,
         brightness: Brightness.light,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Color(0xffffffff),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Stack(
-              alignment: Alignment.center,
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Color(0xffffffff),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  alignment: Alignment.center,
-                  width: 200,
-                  height: 200,
-                  child: Transform.scale(
-                      scale: animation.value,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 180,
-                        height: 180,
-                        decoration: BoxDecoration(
-                            color: Color(0xff34495e).withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(100)),
-                      )),
+                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  child: Text(currentAction, style: TextStyle(fontSize: 24)),
                 ),
-                Positioned(
-                    child: Container(
-                  width: 180,
-                  height: 180,
-                  decoration: BoxDecoration(
-                      color: Color(0xff34495e),
-                      borderRadius: BorderRadius.circular(90)),
-                  child: Center(
-                    child: TimerRun(
-                      key: timerRunKey,
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 200,
+                      height: 200,
+                      child: Transform.scale(
+                          scale: animation.value,
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 180,
+                            height: 180,
+                            decoration: BoxDecoration(
+                                color: Color(0xff34495e).withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(100)),
+                          )),
                     ),
-                  ),
-                ))
+                    Positioned(
+                        child: Container(
+                      width: 180,
+                      height: 180,
+                      decoration: BoxDecoration(
+                          color: Color(0xff34495e),
+                          borderRadius: BorderRadius.circular(90)),
+                      child: Center(
+                        child: TimerRun(
+                          key: timerRunKey,
+                        ),
+                      ),
+                    ))
+                  ],
+                ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        this.setState(() {
-                          isPlay = !isPlay;
-                        });
-                        timeChange();
-                      },
-                      child: Icon(!isPlay ? Icons.play_arrow : Icons.pause,
-                          size: 48.0, color: Color(0xff34495e))),
-                  GestureDetector(
-                      onTap: () {
-                        this.setState(() {
-                          isPlay = false;
-                        });
-                        timerRunKey.currentState.reset();
-                        animatePause();
-                      },
-                      child: Icon(Icons.restore,
-                          size: 48.0, color: Color(0xff34495e))),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          Positioned(
+              right: 20,
+              bottom: 180,
+              child: FloatingActionButton(
+                child: Icon(!isPlay ? Icons.play_arrow : Icons.pause),
+                backgroundColor: Color.fromRGBO(255, 50, 50, 1),
+                onPressed: () {
+                  this.setState(() {
+                    isPlay = !isPlay;
+                  });
+                  timeChange();
+                },
+              )),
+          Positioned(
+              right: 20,
+              bottom: 100,
+              child: FloatingActionButton(
+                child: Icon(Icons.restore),
+                backgroundColor: Color.fromRGBO(255, 50, 50, 1),
+                onPressed: () {
+                  this.setState(() {
+                    isPlay = false;
+                  });
+                  timerRunKey.currentState.reset();
+                  animatePause();
+                },
+              )),
+          Positioned(
+              right: 20,
+              bottom: 20,
+              child: FloatingActionButton(
+                child: Icon(Icons.save),
+                backgroundColor: Color.fromRGBO(255, 50, 50, 1),
+                onPressed: () {
+                  int time = timerRunKey.currentState.time;
+                  print(["save time===>", time]);
+
+                  Action action = new Action(currentAction, time);
+
+                  print(["action===>", action.toString()]);
+
+                  if (time < 1000) {
+                    return;
+                  }
+                  this.setState(() {
+                    isPlay = false;
+                  });
+                  timerRunKey.currentState.reset();
+                  animatePause();
+                },
+              )),
+        ],
       ),
     );
+  }
+}
+
+class Action {
+  String action = "";
+  int duration = 0;
+
+  Action(this.action, this.duration);
+
+  String getAcition() {
+    return this.action;
+  }
+
+  int getDuration() {
+    return this.duration;
+  }
+
+  String toString() {
+    return "action:" + this.action + ",duration:" + this.duration.toString();
   }
 }
