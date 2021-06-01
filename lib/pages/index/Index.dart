@@ -49,6 +49,7 @@ class _IndexState extends State<Index> {
     return Scaffold(
       appBar: AppBarX(
           title: "$now${context.watch<Language>().language["welcome"]}—We Play",
+          brightness: Brightness.light,
           elevation: 0),
       body: Container(
           width: double.infinity,

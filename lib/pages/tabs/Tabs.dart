@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/index/Index.dart';
 import 'package:flutter_app/pages/tabs/Setting.dart';
+import 'package:flutter_app/pages/timer/Index.dart';
 import 'package:flutter_app/pages/user/User.dart';
 
 class Tabs extends StatefulWidget {
@@ -12,7 +13,7 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   PageController _pageController;
 
@@ -25,7 +26,7 @@ class _TabsState extends State<Tabs> {
     this._pageController = PageController(initialPage: this._currentIndex);
   }
 
-  List<Widget> _pageList = [Index(), Setting(), User()];
+  List<Widget> _pageList = [Index(), TheTimer(), User()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +38,6 @@ class _TabsState extends State<Tabs> {
           Navigator.of(context).pushNamed("/photo");
         },
       ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // persistentFooterButtons: [Text('niaho'),Text('niaho')],
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
@@ -47,9 +47,6 @@ class _TabsState extends State<Tabs> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: this._currentIndex,
         onTap: (int index) {
-          if(index == 1){
-            return;
-          }
           setState(() {
             this._currentIndex = index;
             this._pageController.jumpToPage(this._currentIndex);
@@ -68,10 +65,10 @@ class _TabsState extends State<Tabs> {
               title: Text('首页', style: TextStyle(fontSize: 12))),
           BottomNavigationBarItem(
               icon: Image.asset('images/bar_home_normal.png',
-                  width: 1, height: 1),
+                  width: 24, height: 24),
               activeIcon: Image.asset('images/bar_home_click.png',
-                  width: 1, height: 1),
-              title: Text('', style: TextStyle(fontSize: 12))),
+                  width: 24, height: 24),
+              title: Text('计时', style: TextStyle(fontSize: 12))),
           BottomNavigationBarItem(
               icon: Image.asset('images/bar_user_normal.png',
                   width: 24, height: 24),

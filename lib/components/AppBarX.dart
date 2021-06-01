@@ -4,7 +4,15 @@ class AppBarX extends StatefulWidget implements PreferredSizeWidget {
   final double contentHeight = 50.0;
   final String title;
   final double elevation;
-  AppBarX({Key key, this.title, this.elevation = 0.4}) : super(key: key);
+  final Color bgColor;
+  final Brightness brightness;
+  AppBarX(
+      {Key key,
+      this.title,
+      this.elevation = 0.4,
+      this.bgColor = Colors.white,
+      this.brightness = Brightness.dark})
+      : super(key: key);
 
   @override
   _AppBarXState createState() => _AppBarXState();
@@ -21,6 +29,8 @@ class _AppBarXState extends State<AppBarX> {
         title: Text(this.widget.title),
         toolbarHeight: this.widget.contentHeight,
         elevation: this.widget.elevation,
+        backgroundColor: this.widget.bgColor,
+        brightness: this.widget.brightness,
       ),
     );
   }
