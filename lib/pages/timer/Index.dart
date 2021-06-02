@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/TimerRun.dart';
 import 'package:flutter_app/public.dart';
@@ -12,6 +14,7 @@ class TheTimer extends StatefulWidget {
 class _TheTimerState extends State<TheTimer>
     with SingleTickerProviderStateMixin {
   bool isPlay = false;
+  bool isSave = false;
   List<IconData> icon = [Icons.play_arrow, Icons.pause];
   AnimationController controller;
   Animation<double> animation;
@@ -135,26 +138,42 @@ class _TheTimerState extends State<TheTimer>
           Positioned(
               right: 20,
               bottom: 20,
-              child: FloatingActionButton(
-                child: Icon(Icons.save),
-                backgroundColor: Color.fromRGBO(255, 50, 50, 1),
-                onPressed: () {
-                  int time = timerRunKey.currentState.time;
-                  print(["save time===>", time]);
-
-                  Action action = new Action(currentAction, time);
-
-                  print(["action===>", action.toString()]);
-
-                  if (time < 1000) {
-                    return;
-                  }
-                  this.setState(() {
-                    isPlay = false;
-                  });
-                  timerRunKey.currentState.reset();
-                  animatePause();
+              child: AnimatedSwitcher(
+                transitionBuilder: (child, anim) {
+                  return ScaleTransition(
+                    child: child,
+                    scale: anim,
+                  );
                 },
+                duration: Duration(milliseconds: 500),
+                child: FloatingActionButton(
+                  key: ValueKey(isSave),
+                  child: Icon(isSave ? Icons.check : Icons.save),
+                  backgroundColor: Color.fromRGBO(255, 50, 50, 1),
+                  onPressed: () {
+                    int time = timerRunKey.currentState.time;
+                    print(["save time===>", time]);
+
+                    Action action = new Action(currentAction, time);
+
+                    print(["action===>", action.toString()]);
+
+                    if (time < 1000) {
+                      return;
+                    }
+                    this.setState(() {
+                      isPlay = false;
+                      isSave = true;
+                    });
+                    timerRunKey.currentState.reset();
+                    animatePause();
+                    Timer(Duration(milliseconds: 1000), () {
+                      this.setState(() {
+                        isSave = false;
+                      });
+                    });
+                  },
+                ),
               )),
         ],
       ),

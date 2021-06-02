@@ -3,6 +3,7 @@ import 'package:flutter_app/model/counter_model.dart';
 import 'package:flutter_app/model/language_model.dart';
 import 'package:flutter_app/public.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Index extends StatefulWidget {
   Index({Key key}) : super(key: key);
