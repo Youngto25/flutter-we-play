@@ -111,16 +111,25 @@ class _TheTimerState extends State<TheTimer>
           Positioned(
               right: 20,
               bottom: 180,
-              child: FloatingActionButton(
-                child: Icon(!isPlay ? Icons.play_arrow : Icons.pause),
-                backgroundColor: Color.fromRGBO(255, 50, 50, 1),
-                onPressed: () {
-                  this.setState(() {
-                    isPlay = !isPlay;
-                  });
-                  timeChange();
-                },
-              )),
+              child: AnimatedSwitcher(
+                  transitionBuilder: (child, anim) {
+                    return ScaleTransition(
+                      child: child,
+                      scale: anim,
+                    );
+                  },
+                  duration: Duration(milliseconds: 500),
+                  child: FloatingActionButton(
+                    key: ValueKey(isPlay),
+                    child: Icon(!isPlay ? Icons.play_arrow : Icons.pause),
+                    backgroundColor: Color.fromRGBO(255, 50, 50, 1),
+                    onPressed: () {
+                      this.setState(() {
+                        isPlay = !isPlay;
+                      });
+                      timeChange();
+                    },
+                  ))),
           Positioned(
               right: 20,
               bottom: 100,
