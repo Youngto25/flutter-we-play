@@ -86,9 +86,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     super.build(context);
     return Scaffold(
-        appBar: AppBarX(title: "Picture"),
+        backgroundColor: Colors.white,
+        appBar: AppBarX(title: "Picture", brightness: Brightness.light),
         body: _list.length == 0
             ? Center(child: CircularProgressIndicator())
             : EasyRefresh(
@@ -102,27 +104,45 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 onLoad: () async {
                   await load();
                 },
-                child: ListView.builder(
+                child: ListView(
                     controller: _controller,
-                    padding: EdgeInsets.only(top: 0, left: 10, right: 10),
-                    itemCount: this._list.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          width: double.infinity,
-                          color: Colors.white,
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(new FadeRoute(
-                                    page: PhotoViewGalleryScreen(
-                                  images: _list, //传入图片list
-                                  index: index, //传入当前点击的图片的index
-                                  heroTag:
-                                      _list[index], //传入当前点击的图片的hero tag （可选）
-                                )));
-                              },
-                              child: getImage(index: index)));
-                    })));
+                    padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                    children: [
+                      Container(
+                        child: Wrap(
+                          spacing: 8.0,
+                          children: _list.asMap().keys.map<Widget>((index) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Container(
+                                    width: (size.width - 28) / 2,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Color(0xff000000).withOpacity(0.2),
+                                              blurRadius: 2.0)
+                                        ]),
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(new FadeRoute(
+                                                  page: PhotoViewGalleryScreen(
+                                            images: _list, //传入图片list
+                                            index: index, //传入当前点击的图片的index
+                                            heroTag: _list[
+                                                index], //传入当前点击的图片的hero tag （可选）
+                                          )));
+                                        },
+                                        child: getImage(index: index))),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      )
+                    ])));
   }
 
   Widget getImage({index}) {
