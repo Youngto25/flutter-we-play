@@ -10,3 +10,6 @@ export 'package:flutter_app/components/AppBarX.dart';
 
 // http
 export 'package:flutter_app/utils/http/request.dart';
+
+// bean
+export 'package:flutter_app/bean/Finish.dart';

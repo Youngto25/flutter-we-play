@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/counter_model.dart';
 import 'package:flutter_app/model/language_model.dart';
 import 'package:flutter_app/public.dart';
+import 'package:flutter_app/utils/date_util.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -15,9 +17,10 @@ class Index extends StatefulWidget {
 class _IndexState extends State<Index> {
   List<int> playCountList = [10, 15, 20, 30, 40, 50, 100];
   int selectCount = 0;
-  List<int> finishList = [];
+  List<Finish> finishList = [];
   int finishCount = 0;
   String now = '';
+  String type = '俯卧撑';
 
   @override
   void initState() {
@@ -28,8 +31,8 @@ class _IndexState extends State<Index> {
   // 计算累计完成次数
   void computeFinishCount() {
     int count = 0;
-    finishList.forEach((vo) {
-      count += vo;
+    finishList.forEach((Finish vo) {
+      count += vo.getCount();
     });
     finishCount = count;
     this.setState(() {});
@@ -40,7 +43,9 @@ class _IndexState extends State<Index> {
     if (selectCount == 0) {
       return;
     }
-    finishList.add(selectCount);
+
+    Finish finish = new Finish(this.type, this.selectCount, new DateTime.now());
+    finishList.add(finish);
     selectCount = 0;
     this.computeFinishCount();
   }
@@ -132,6 +137,36 @@ class _IndexState extends State<Index> {
                                   : '选择完成次数',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.white))))),
+              Expanded(
+                flex: 1,
+                child: ListView(
+                  padding: EdgeInsets.only(top: 10.0),
+                  children: finishList.map<Widget>((Finish vo) {
+                    return Container(
+                        width: double.infinity,
+                        height: 60.0,
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    width: 1.0, color: Color(0xfff1f1f1)))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(vo.getType()),
+                            Row(children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 20),
+                                child: Text(vo.getCount().toString()),
+                              ),
+                              Text(
+                                vo.getCreatedTime().toString().substring(0, 16),
+                              )
+                            ])
+                          ],
+                        ));
+                  }).toList(),
+                ),
+              )
               // RaisedButton(
               //     onPressed: () {
               //       debugPrint("开始下载");
