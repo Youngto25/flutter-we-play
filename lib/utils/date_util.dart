@@ -424,4 +424,28 @@ class DateUtil {
         : DateTime.utc(month.year + 1, 1, 1, 12);
     return date.subtract(const Duration(days: 1));
   }
+
+  // 获取时间差
+  static String getTimeDiff(DateTime createdTime) {
+    DateTime now = new DateTime.now();
+    Duration diff = now.difference(createdTime);
+    int days = diff.inDays,
+        hours = diff.inHours,
+        minutes = diff.inMinutes,
+        seconds = diff.inSeconds;
+    // print(["获取时间差", days, hours, minutes, seconds]);
+    if (days > 0) {
+      return days.toString() + '天前';
+    }
+    if (hours > 0) {
+      return hours.toString() + '小时前';
+    }
+    if (minutes > 0) {
+      return minutes.toString() + '分钟前';
+    }
+    if (seconds > 0) {
+      return seconds.toString() + '秒前';
+    }
+    return '刚刚';
+  }
 }

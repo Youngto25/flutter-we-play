@@ -6,7 +6,7 @@ import 'package:flutter_app/pages/user/User.dart';
 
 class Tabs extends StatefulWidget {
   final index;
-  Tabs({Key key, this.index = 0}) : super(key: key);
+  Tabs({Key key, this.index = 1}) : super(key: key);
 
   @override
   _TabsState createState() => _TabsState(this.index);
