@@ -3,12 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/AppBarX.dart';
 import 'package:flutter_app/pages/home/PhotoViewPage.dart';
-import 'package:flutter_app/pages/home/component/PintuanItem.dart';
-import '../../utils/http/request.dart';
 
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
+
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 const String server = "https://cdn.shibe.online/shibes/";
 const String api = "http://shibe.online/api";
@@ -104,76 +103,43 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 onLoad: () async {
                   await load();
                 },
-                child: ListView(
-                    controller: _controller,
-                    padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-                    children: [
-                      Container(
-                        child: Wrap(
-                          spacing: 8.0,
-                          children: _list.asMap().keys.map<Widget>((index) {
-                            return Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Container(
-                                    width: (size.width - 28) / 2,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Color(0xff000000).withOpacity(0.2),
-                                              blurRadius: 2.0)
-                                        ]),
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context)
-                                              .push(new FadeRoute(
-                                                  page: PhotoViewGalleryScreen(
-                                            images: _list, //传入图片list
-                                            index: index, //传入当前点击的图片的index
-                                            heroTag: _list[
-                                                index], //传入当前点击的图片的hero tag （可选）
-                                          )));
-                                        },
-                                        child: getImage(index: index))),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      )
-                    ])));
+                child: StaggeredGridView.countBuilder(
+                  padding: const EdgeInsets.all(8.0),
+                  crossAxisCount: 4,
+                  itemCount: _list.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return itemWidget(i);
+                  },
+                  staggeredTileBuilder: (int index) =>
+                      StaggeredTile.count(2, index == 0 ? 2.5 : 3),
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                )));
+  }
+
+  Widget itemWidget(int index) {
+    return Material(
+      elevation: 8.0,
+      borderRadius: BorderRadius.circular(8.0),
+      // color: Colors.teal,
+      child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(new FadeRoute(
+                page: PhotoViewGalleryScreen(
+              images: _list, //传入图片list
+              index: index, //传入当前点击的图片的index
+              heroTag: _list[index], //传入当前点击的图片的hero tag （可选）
+            )));
+          },
+          child: getImage(index: index)),
+    );
   }
 
   Widget getImage({index}) {
-    // Image image = Image.network(_list[index]);
-
-    // image.image
-    //     .resolve(new ImageConfiguration())
-    //     .addListener(new ImageStreamListener(
-    //   (ImageInfo info, bool _) {
-    //     print('model.width======${info.image.width},${info.image.height}');
-    //   },
-    // ));
-
-    return Image.network(
-      _list[index],
-      frameBuilder: (context, child, frame, wasSynchronousLoaded) {
-        if (wasSynchronousLoaded) {
-          return child;
-        } else {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            child: frame != null
-                ? child
-                : SizedBox(
-                    width: double.infinity,
-                    height: 300.0,
-                  ),
-          );
-        }
-      },
-    );
+    return new Hero(
+        tag: _list[index] + index.toString(),
+        child:
+            CachedNetworkImage(imageUrl: _list[index], fit: BoxFit.fitWidth));
   }
 
   bool get wantKeepAlive => true;

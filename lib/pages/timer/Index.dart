@@ -22,6 +22,7 @@ class _TheTimerState extends State<TheTimer>
   String type = "平板支撑";
   List<Finish> finishList = [];
   FinishProvider finishProvider;
+  int totalTime = 0;
 
   @override
   // TODO: implement wantKeepAlive
@@ -51,9 +52,12 @@ class _TheTimerState extends State<TheTimer>
   // 初始化数据
   void initFinishCount() async {
     finishList = await finishProvider.query(type);
+    int total = 0;
     finishList.forEach((Finish vo) {
       print(["init===>", vo.getType(), vo.getId(), vo.getCount()]);
+      total += vo.getCount();
     });
+    totalTime = total;
     this.setState(() {});
     if (finishList.length == 0) {
       return;
@@ -90,7 +94,7 @@ class _TheTimerState extends State<TheTimer>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarX(
-        title: "计时器",
+        title: "计时器->总完成时长" + DateUtil.getDurationTime(totalTime),
         elevation: 0,
         brightness: Brightness.light,
       ),
@@ -225,6 +229,7 @@ class _TheTimerState extends State<TheTimer>
                   },
                   duration: Duration(milliseconds: 500),
                   child: FloatingActionButton(
+                    heroTag: "startOrStop",
                     key: ValueKey(isPlay),
                     child: Icon(!isPlay ? Icons.play_arrow : Icons.pause),
                     backgroundColor: Color.fromRGBO(255, 50, 50, 1),
@@ -239,6 +244,7 @@ class _TheTimerState extends State<TheTimer>
               right: 20,
               bottom: 100,
               child: FloatingActionButton(
+                heroTag: "refresh",
                 child: Icon(Icons.restore),
                 backgroundColor: Color.fromRGBO(255, 50, 50, 1),
                 onPressed: () {
@@ -261,18 +267,15 @@ class _TheTimerState extends State<TheTimer>
                 },
                 duration: Duration(milliseconds: 500),
                 child: FloatingActionButton(
+                  heroTag: "save",
                   key: ValueKey(isSave),
                   child: Icon(isSave ? Icons.check : Icons.save),
                   backgroundColor: Color.fromRGBO(255, 50, 50, 1),
                   onPressed: () async {
                     int time = timerRunKey.currentState.time;
-                    print(["save time===>", time]);
                     Finish action = new Finish(type, time, new DateTime.now().toString(), 0);
                     await finishProvider.insert(action);
                     this.initFinishCount();
-                    if (time < 1000) {
-                      return;
-                    }
                     this.setState(() {
                       isPlay = false;
                       isSave = true;

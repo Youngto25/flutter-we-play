@@ -448,4 +448,13 @@ class DateUtil {
     }
     return '刚刚';
   }
+
+  // 时长转换
+  static String getDurationTime(int duration) {
+    int hours = duration ~/ (1000 * 60 * 60);
+    int minutes = (duration - hours * 1000 * 60 * 60) ~/ (1000 * 60);
+    int seconds = (duration - hours * 1000 * 60 * 60 - minutes * 1000 * 60) ~/ 1000;
+    // print(["hours", hours, minutes, seconds]);
+    return '$hours时$minutes分$seconds秒';
+  }
 }
