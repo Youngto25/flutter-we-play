@@ -54,28 +54,28 @@ class _TabsState extends State<Tabs> {
             this._pageController.jumpToPage(this._currentIndex);
           });
         },
-        selectedItemColor: Color.fromRGBO(255, 50, 50, 1),
+        selectedItemColor: Color.fromRGBO(255, 50, 50, 1.0),
         unselectedItemColor: Color.fromRGBO(153, 153, 153, 1),
 
         type: BottomNavigationBarType.fixed, //配置底部tabs可以有多个按钮
         items: [
           BottomNavigationBarItem(
               icon: Image.asset('images/bar_home_normal.png',
-                  width: 24, height: 24),
+                  width: 28, height: 28),
               activeIcon: Image.asset('images/bar_home_click.png',
-                  width: 24, height: 24),
+                  width: 28, height: 28),
               title: Text('首页', style: TextStyle(fontSize: 12))),
           BottomNavigationBarItem(
-              icon: Image.asset('images/bar_home_normal.png',
-                  width: 24, height: 24),
-              activeIcon: Image.asset('images/bar_home_click.png',
-                  width: 24, height: 24),
+              icon: Image.asset('images/bar_time_normal.png',
+                  width: 28, height: 28),
+              activeIcon: Image.asset('images/bar_time_click.png',
+                  width: 28, height: 28),
               title: Text('计时', style: TextStyle(fontSize: 12))),
           BottomNavigationBarItem(
               icon: Image.asset('images/bar_user_normal.png',
-                  width: 24, height: 24),
+                  width: 28, height: 28),
               activeIcon: Image.asset('images/bar_user_click.png',
-                  width: 24, height: 24),
+                  width: 28, height: 28),
               title: Text('我的', style: TextStyle(fontSize: 12))),
         ],
       ),

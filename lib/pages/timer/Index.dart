@@ -148,6 +148,7 @@ class _TheTimerState extends State<TheTimer>
                 finishList.length > 0 ? Expanded(
                   flex: 1,
                   child: ListView(
+                    physics: BouncingScrollPhysics(),
                     padding: EdgeInsets.only(top: 10.0),
                     children: finishList.map<Widget>((Finish vo) {
                       return GestureDetector(

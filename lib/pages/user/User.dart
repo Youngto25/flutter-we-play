@@ -11,13 +11,17 @@ class User extends StatefulWidget {
   _UserState createState() => _UserState();
 }
 
-class _UserState extends State<User> {
+class _UserState extends State<User> with AutomaticKeepAliveClientMixin {
   List pickerChildren = [
     {"name": "中文", "code": "zh"},
     {"name": "English", "code": "en"},
   ];
   int selectedValue = 0;
   String selectedGender = "中文";
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

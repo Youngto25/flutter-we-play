@@ -15,7 +15,7 @@ class Index extends StatefulWidget {
   _IndexState createState() => _IndexState();
 }
 
-class _IndexState extends State<Index> with AutomaticKeepAliveClientMixin{
+class _IndexState extends State<Index> with AutomaticKeepAliveClientMixin {
   List<int> playCountList = [10, 15, 20, 30, 40, 50, 100];
   int selectCount = 0;
   List<Finish> finishList = [];
@@ -79,8 +79,8 @@ class _IndexState extends State<Index> with AutomaticKeepAliveClientMixin{
     if (selectCount == 0) {
       return;
     }
-    Finish finish =
-        new Finish(this.type, this.selectCount, new DateTime.now().toString(), 0);
+    Finish finish = new Finish(
+        this.type, this.selectCount, new DateTime.now().toString(), 0);
     Finish f = await finishProvider.insert(finish);
     if (f == null) {
       return;
@@ -184,6 +184,7 @@ class _IndexState extends State<Index> with AutomaticKeepAliveClientMixin{
               Expanded(
                 flex: 1,
                 child: ListView(
+                  physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.only(top: 10.0),
                   children: finishList.map<Widget>((Finish vo) {
                     return GestureDetector(
@@ -214,8 +215,7 @@ class _IndexState extends State<Index> with AutomaticKeepAliveClientMixin{
                                   ),
                                 ],
                               );
-                            }
-                        );
+                            });
                       },
                       child: Container(
                           width: double.infinity,
@@ -263,7 +263,6 @@ class _IndexState extends State<Index> with AutomaticKeepAliveClientMixin{
             ],
           )),
     );
-
   }
 
   Future downloadProgress(a, b) async {
