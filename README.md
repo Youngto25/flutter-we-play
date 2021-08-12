@@ -1,16 +1,21 @@
-# flutter_app
+# We Play
 
-A new Flutter application.
+使用Flutter开发的一款记录性质App，主要用于Flutter练手。
 
-## Getting Started
+## 页面
+### 首页
+![首页](/assets/首页.jpg)
+- 记录每日俯卧撑数量；使用sqlflite本地存储；可进行删除操作
 
-This project is a starting point for a Flutter application.
+### 计时
+![计时](/assets/计时.jpg)
+- 记录每日平板支撑时间；使用sqlflite本地存储；可进行删除操作
 
-A few resources to get you started if this is your first Flutter project:
+### 我的
+![我的](/assets/我的.jpg)
+- 可切换语言；跳转至picture
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Picture
+![picture](/assets/picture.jpg)
+![picture_view](/assets/picture_view.jpg)
+- 图片瀑布流展示及预览
