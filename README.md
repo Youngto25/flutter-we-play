@@ -4,7 +4,7 @@
 
 ## 页面
 ### 首页
-![首页](/assets/首页.jpg){width: 200px}
+<img src="/assets/首页.jpg" alt="/assets/首页.jpg" style="width: 200px"/>
 - 记录每日俯卧撑数量；使用sqlflite本地存储；可进行删除操作
 
 ### 计时
